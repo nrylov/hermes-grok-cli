@@ -35,7 +35,7 @@ Do not use for vague exploration. Hermes reviews every diff before it is accepte
 Use `terminal` with the helper, which handles JSON parsing and reports the diff:
 
 ```
-terminal(command="python3 skills/grok-cli/scripts/grok_run.py /tmp/task.txt --cwd /path/to/repo --permission-mode bypassPermissions --max-turns 10")
+terminal(command="python3 ~/.hermes/skills/autonomous-ai-agents/grok-cli/scripts/grok_run.py /tmp/task.txt --cwd /path/to/repo --permission-mode bypassPermissions --max-turns 10")
 ```
 
 Write the prompt to a file first (`write_file`), not a shell heredoc.
