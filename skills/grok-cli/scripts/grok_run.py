@@ -53,10 +53,10 @@ def git_diff_stat(cwd):
 
 
 def run(prompt, cwd, permission_mode="acceptEdits", max_turns=10, timeout=600, model=None):
-    if not shutil.which("grok"):
-        return {"ok": False, "error": "grok binary not found on PATH"}
     if not os.path.isdir(os.path.join(cwd, ".git")):
         return {"ok": False, "error": "cwd is not a git repo root: %s" % cwd}
+    if not shutil.which("grok"):
+        return {"ok": False, "error": "grok binary not found on PATH"}
     cmd = build_command(prompt, permission_mode, max_turns, model)
     try:
         proc = subprocess.run(cmd, cwd=cwd, capture_output=True, text=True, timeout=timeout)

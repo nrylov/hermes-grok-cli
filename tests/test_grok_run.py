@@ -51,12 +51,20 @@ class Run(unittest.TestCase):
             os.makedirs(os.path.join(d, ".git"))
             cancelled = dict(SAMPLE, stopReason="cancelled")
             orig = grok_run.subprocess.run
-            class P: returncode = 0; stdout = json.dumps(cancelled); stderr = ""
-            grok_run.subprocess.run = lambda *a, **k: P() if "grok" in a[0][0] else orig(*a, **k)
+            orig_which = grok_run.shutil.which
+
+            class P:
+                returncode = 0
+                stdout = json.dumps(cancelled)
+                stderr = ""
+
+            grok_run.subprocess.run = lambda *a, **k: P() if a[0][0] == "grok" else orig(*a, **k)
+            grok_run.shutil.which = lambda name: "/bin/grok"  # stub: CI has no grok binary
             try:
                 res = grok_run.run("x", d)
             finally:
                 grok_run.subprocess.run = orig
+                grok_run.shutil.which = orig_which
             self.assertFalse(res["ok"])
             self.assertEqual(res["stop_reason"], "cancelled")
 
